@@ -1,0 +1,1 @@
+git+https://github.com/Esteban108/qtile_widget_task_log
