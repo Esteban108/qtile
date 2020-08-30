@@ -277,7 +277,6 @@ for i in groups:
         Key([mod, "shift"], i.name, lazy.window.togroup(i.name), lazy.group[i.name].toscreen()),
     ])
 
-
 layouts = [
     layout.MonadTall(margin=8, border_width=2, border_focus="#5e81ac", border_normal="#4c566a", name=" Tall"),
     layout.MonadWide(margin=8, border_width=2, border_focus="#5e81ac", border_normal="#4c566a", name=" Wide"),
@@ -285,7 +284,7 @@ layouts = [
     # layout.Bsp(**layout_theme),
     #  layout.Floating(margin=5, border_width=2, border_focus="#5e81ac", border_normal="#4c566a", name=" Float"),
     # layout.RatioTile(**layout_theme),
-    layout.Zoomy(name=" Zoomy", columnwidth=600,),
+    layout.Zoomy(name=" Zoomy", columnwidth=600),
     layout.TreeTab(name=" Tree"),
     #    layout.Slice(**layout_theme),
     layout.Max(margin=5, border_width=2, border_focus="#5e81ac", border_normal="#4c566a", name=" Max")
@@ -597,7 +596,7 @@ def assign_app_group(client):
          "XF86HomePage": ["org.remmina.Remmina", "VirtualBox Manager", "VirtualBox Machine", "Vmplayer",
                           "virtualbox manager", "virtualbox machine", "vmplayer", ],
 
-         "9": ["whatsapp-nativefier-d52542", "whatsapp-nativefier-d52542", "Discord", "discord","Slack", "slack"],
+         "9": ["whatsapp-nativefier-d52542", "whatsapp-nativefier-d52542", "Discord", "discord", "Slack", "slack"],
 
          "0": []
          }
