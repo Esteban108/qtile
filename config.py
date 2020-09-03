@@ -252,7 +252,7 @@ group_names = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "XF86Calculator
 group_labels = ["", "", "", "", "", "", "", "", "", "", "", "", ""]
 
 group_layouts = [" Tall", " Tall", " Tree", " Tree", " Tall", " Tall", " Tall", " Tall",
-                 " Zoomy", " Zoomy", "monadwide", " Max", " Tall"]
+                 " Tree", " Tree", "monadwide", " Max", " Tall"]
 
 for i in range(len(group_names)):
     groups.append(
@@ -267,8 +267,9 @@ for i in groups:
 
         # CHANGE WORKSPACES
         Key([mod], i.name, lazy.group[i.name].toscreen()),
-        Key([mod], "Tab", lazy.screen.next_group()),
-        Key(["mod1"], "Tab", lazy.screen.next_group()),
+        Key([mod, "mod1"], "Right", lazy.screen.next_group()),
+        Key([mod, "mod1"], "Left", lazy.screen.prev_group()),
+        Key(["mod1"], "Tab", lazy.screen.toggle_group()),
         Key(["mod1", "shift"], "Tab", lazy.screen.prev_group()),
 
         # MOVE WINDOW TO SELECTED WORKSPACE 1-10 AND STAY ON WORKSPACE
@@ -283,7 +284,7 @@ layouts = [
     # layout.Matrix(**layout_theme),
     # layout.Bsp(**layout_theme),
     #  layout.Floating(margin=5, border_width=2, border_focus="#5e81ac", border_normal="#4c566a", name=" Float"),
-    # layout.RatioTile(**layout_theme),
+    layout.RatioTile(margin=5, border_width=2, border_focus="#5e81ac", border_normal="#4c566a", name=" Bsp"),
     layout.Zoomy(name=" Zoomy", columnwidth=600),
     layout.TreeTab(name=" Tree"),
     #    layout.Slice(**layout_theme),
