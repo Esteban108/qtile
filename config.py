@@ -249,10 +249,10 @@ groups = []
 # FOR QWERTY KEYBOARDS
 group_names = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "XF86Calculator", "XF86HomePage", "XF86AudioMute"]
 
-group_labels = ["", "", "", "", "", "", "", "", "", "", "", "", ""]
+group_labels = ["", "{}", "", "", "", "", "", "", "", "", "", "", ""]
 
-group_layouts = [" Tall", " Tall", " Tree", " Tree", " Tall", " Tall", " Tall", " Tall",
-                 " Tree", " Tree", "monadwide", " Max", " Tall"]
+group_layouts = ["侀 Tall", "侀 Tall", " Tree", " Tree", "侀 Tall", "侀 Tall", "侀 Tall", "侀 Tall",
+                 " Tree", " Tree", "monadwide", " Max", "侀 Tall"]
 
 for i in range(len(group_names)):
     groups.append(
@@ -279,12 +279,12 @@ for i in groups:
     ])
 
 layouts = [
-    layout.MonadTall(margin=8, border_width=2, border_focus="#5e81ac", border_normal="#4c566a", name=" Tall"),
-    layout.MonadWide(margin=8, border_width=2, border_focus="#5e81ac", border_normal="#4c566a", name=" Wide"),
+    layout.MonadTall(margin=8, border_width=2, border_focus="#5e81ac", border_normal="#4c566a", name="侀 Tall"),
+    layout.MonadWide(margin=8, border_width=2, border_focus="#5e81ac", border_normal="#4c566a", name="⬓ Wide"),
     # layout.Matrix(**layout_theme),
     # layout.Bsp(**layout_theme),
     #  layout.Floating(margin=5, border_width=2, border_focus="#5e81ac", border_normal="#4c566a", name=" Float"),
-    layout.RatioTile(margin=5, border_width=2, border_focus="#5e81ac", border_normal="#4c566a", name=" Bsp"),
+    layout.RatioTile(margin=5, border_width=2, border_focus="#5e81ac", border_normal="#4c566a", name="全 Bsp"),
     layout.Zoomy(name=" Zoomy", columnwidth=600),
     layout.TreeTab(name=" Tree"),
     #    layout.Slice(**layout_theme),
@@ -348,7 +348,7 @@ def init_widgets_list():
             background=colors[1]
         ),
         CurrentLayout(
-            font="Noto Sans Bold",
+            font="MesloLGS NF Bold",
             foreground=colors[5],
             background=colors[1]
         ),
@@ -597,7 +597,7 @@ def assign_app_group(client):
          "XF86HomePage": ["org.remmina.Remmina", "VirtualBox Manager", "VirtualBox Machine", "Vmplayer",
                           "virtualbox manager", "virtualbox machine", "vmplayer", ],
 
-         "9": ["whatsapp-nativefier-d52542", "whatsapp-nativefier-d52542", "Discord", "discord", "Slack", "slack"],
+         "9": ["whatsapp-nativefier-d40211", "whatsapp-nativefier-d40211", "Discord", "discord", "Slack", "slack"],
 
          "0": []
          }
