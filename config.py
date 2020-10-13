@@ -507,7 +507,7 @@ def init_widgets_list_2():
     prompt = "{0}@{1}: ".format(os.environ["USER"], socket.gethostname())
     widgets_list = [
         GroupBox(font="FontAwesome",
-                 fontsize=16,
+                 fontsize=18,
                  margin_y=-1,
                  margin_x=0,
                  padding_y=6,
@@ -516,9 +516,10 @@ def init_widgets_list_2():
                  disable_drag=True,
                  active=colors[5],
                  inactive=colors[9],
-                 rounded=False,
+                 rounded=True,
                  highlight_method="text",
                  this_current_screen_border=colors[3],
+                 other_current_screen_border=colors[8],
                  foreground=colors[2],
                  background=colors[1]
                  ),
@@ -544,6 +545,21 @@ def init_widgets_list_2():
                    foreground=colors[5],
                    background=colors[1],
                    ),
+        Sep(
+            linewidth=1,
+            padding=10,
+            foreground=colors[2],
+            background=colors[1]
+        ),
+        Net(
+            font="FontAwesome",
+            fontsize=12,
+            interface="wlp26s0",
+            foreground=colors[2],
+            background=colors[1],
+            padding=0,
+            format="{down} ↓↑ {up}"
+        ),
     ]
     return widgets_list
 
@@ -563,6 +579,8 @@ def init_widgets_screen2():
 
 widgets_screen1 = init_widgets_screen1()
 widgets_screen2 = init_widgets_screen2()
+
+#, margin=[10, 10, 0, 10]
 
 
 def init_screens():
@@ -657,6 +675,7 @@ floating_layout = layout.Floating(float_rules=[
     {'wname': 'branchdialog'},
     {'wname': 'Open File'},
     {'wname': 'pinentry'},
+    {'wname': 'Picture in picture'},
     {'wmclass': 'ssh-askpass'},
 
 ], fullscreen_border_width=0, border_width=0)
