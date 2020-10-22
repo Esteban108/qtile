@@ -251,8 +251,8 @@ group_names = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "XF86Calculator
 
 group_labels = ["", "{}", "", "", "", "", "", "", "", "", "", "", ""]
 
-group_layouts = ["侀 Tall", "侀 Tall", " Tree", " Tree", "侀 Tall", "侀 Tall", "侀 Tall", "侀 Tall",
-                 " Tree", " Tree", "monadwide", " Max", "侀 Tall"]
+group_layouts = ["侀 Tile", "侀 Tile", " Tree", " Tree", "侀 Tile", "侀 Tile", "侀 Tile", "侀 Tile",
+                 " Tree", " Tree", "monadwide", " Max", "侀 Tile"]
 
 for i in range(len(group_names)):
     groups.append(
@@ -279,7 +279,7 @@ for i in groups:
     ])
 
 layouts = [
-    layout.MonadTall(margin=8, border_width=2, border_focus="#5e81ac", border_normal="#4c566a", name="侀 Tall"),
+    layout.Tile(border_width=2, border_focus="#5e81ac", border_normal="#4c566a", name="侀 Tile"),
     layout.MonadWide(margin=8, border_width=2, border_focus="#5e81ac", border_normal="#4c566a", name="⬓ Wide"),
     # layout.Matrix(**layout_theme),
     # layout.Bsp(**layout_theme),
@@ -288,7 +288,7 @@ layouts = [
     layout.Zoomy(name=" Zoomy", columnwidth=600),
     layout.TreeTab(name=" Tree"),
     #    layout.Slice(**layout_theme),
-    layout.Max(margin=5, border_width=2, border_focus="#5e81ac", border_normal="#4c566a", name=" Max")
+    layout.Max(margin=5, border_width=2, border_focus="#5e81ac", border_normal="#4c566a", name=" Max"),
 ]
 
 
