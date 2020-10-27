@@ -2,6 +2,7 @@ import os
 import socket
 import subprocess
 from datetime import datetime
+from random import randrange
 
 from libqtile import layout, bar, hook
 from libqtile.command import lazy
@@ -18,6 +19,7 @@ from libqtile.widget.systray import Systray
 from libqtile.widget.textbox import TextBox
 from libqtile.widget.windowname import WindowName
 
+from radio import Radio
 from task_log import TaskLog
 
 # mod4 or mod = super key
@@ -321,6 +323,8 @@ def init_widgets_defaults():
 
 widget_defaults = init_widgets_defaults()
 
+random_bar = lambda: "▁▂▃▄▅▆▇█"[randrange(0, 8)]
+
 
 def init_widgets_list():
     prompt = "{0}@{1}: ".format(os.environ["USER"], socket.gethostname())
@@ -370,6 +374,17 @@ def init_widgets_list():
             foreground=colors[2],
             background=colors[1]
         ),
+        Radio(playlist={"BajoLaLupa": "http://198.15.107.53:8090/;"},
+              playing_spinner=[random_bar() + random_bar() + random_bar() + random_bar() for e in range(10)],
+              font="MesloLGS NF",
+              mute_string="婢",
+              stopped_spinner=[""]),
+        Sep(
+            linewidth=1,
+            padding=10,
+            foreground=colors[2],
+            background=colors[1]
+        ),
         TaskLog(
             line_saved="\nFecha: {date}     min: {time}     Tarea: {task}",
             prompt_name="my_prompt",
@@ -384,13 +399,13 @@ def init_widgets_list():
             background=colors[1]
         ),
         Net(
-            font="FontAwesome",
+            font="MesloLGS NF Blond",
             fontsize=12,
-            interface="enp24s0",
+            #interface=["enp24s0", "wlp26s0"],
             foreground=colors[2],
             background=colors[1],
             padding=0,
-            format="{down} ↓↑ {up}"
+            format="{down}  {up}"
         ),
         Sep(
             linewidth=1,
@@ -580,7 +595,7 @@ def init_widgets_screen2():
 widgets_screen1 = init_widgets_screen1()
 widgets_screen2 = init_widgets_screen2()
 
-#, margin=[10, 10, 0, 10]
+# , margin=[10, 10, 0, 10]
 
 
 def init_screens():
