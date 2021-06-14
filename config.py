@@ -6,7 +6,7 @@ from random import randrange
 
 from libqtile import layout, bar, hook
 from libqtile.command import lazy
-from libqtile.config import Key, Screen, Group, Drag, Click
+from libqtile.config import Key, Screen, Group, Drag, Click, Match
 from libqtile.widget.clock import Clock
 from libqtile.widget.currentlayout import CurrentLayout
 from libqtile.widget.graph import CPUGraph
@@ -15,10 +15,12 @@ from libqtile.widget.memory import Memory
 from libqtile.widget.net import Net
 from libqtile.widget.prompt import Prompt
 from libqtile.widget.sep import Sep
+from libqtile.widget.spacer import Spacer
 from libqtile.widget.systray import Systray
 from libqtile.widget.textbox import TextBox
 from libqtile.widget.windowname import WindowName
 
+from headset_battery import HeadsetBattery
 from radio import Radio
 from task_log import TaskLog
 
@@ -54,13 +56,11 @@ keys = [
     # Key([mod], "e", lazy.spawn('atom')),
     Key([mod], "c", lazy.spawn('conky-toggle')),
     Key([mod], "f", lazy.window.toggle_fullscreen()),
-    Key([mod], "m", lazy.spawn('pragha')),
     Key([mod], "q", lazy.window.kill()),
     Key([mod], "r", lazy.spawn('rofi-theme-selector')),
     Key([mod], "t", lazy.spawn('urxvt')),
     Key([mod], "v", lazy.spawn('pavucontrol')),
-    # Key([mod], "w", lazy.spawn('vivaldi-stable')), TODO TEST vivaldi
-    Key([mod], "x", lazy.spawn('oblogout')),
+    Key([mod], "x", lazy.spawn('arcolinux-logout')),
     Key([mod], "Escape", lazy.spawn('xkill')),
     Key([mod], "Return", lazy.spawn('xfce4-terminal')),
     Key([mod], "KP_Enter", lazy.spawn('xfce4-terminal')),
@@ -165,10 +165,11 @@ keys = [
     # QTILE LAYOUT KEYS
     Key([mod], "n", lazy.layout.normalize()),
     Key([mod], "space", lazy.next_layout()),
+    Key([mod], 'm', lazy.layout.maximize()),
 
     # CHANGE FOCUS
-    Key([mod], "Up", lazy.layout.up()),
-    Key([mod], "Down", lazy.layout.down()),
+    Key([mod], "Up", lazy.layout.up(), lazy.layout.maximize()),
+    Key([mod], "Down", lazy.layout.down(), lazy.layout.maximize()),
     Key([mod], "Left", lazy.layout.left()),
     Key([mod], "Right", lazy.layout.right()),
     Key([mod], "k", lazy.layout.up()),
@@ -177,23 +178,11 @@ keys = [
     Key([mod], "l", lazy.layout.right()),
 
     # RESIZE UP, DOWN, LEFT, RIGHT
-    Key([mod, "control"], "l",
-        lazy.layout.grow_right(),
-        lazy.layout.grow(),
-        lazy.layout.increase_ratio(),
-        lazy.layout.delete(),
-        ),
     Key([mod, "control"], "Right",
         lazy.layout.grow_right(),
         lazy.layout.grow(),
         lazy.layout.increase_ratio(),
         lazy.layout.delete(),
-        ),
-    Key([mod, "control"], "h",
-        lazy.layout.grow_left(),
-        lazy.layout.shrink(),
-        lazy.layout.decrease_ratio(),
-        lazy.layout.add(),
         ),
     Key([mod, "control"], "Left",
         lazy.layout.grow_left(),
@@ -201,20 +190,10 @@ keys = [
         lazy.layout.decrease_ratio(),
         lazy.layout.add(),
         ),
-    Key([mod, "control"], "k",
-        lazy.layout.grow_up(),
-        lazy.layout.grow(),
-        lazy.layout.decrease_nmaster(),
-        ),
     Key([mod, "control"], "Up",
         lazy.layout.grow_up(),
         lazy.layout.grow(),
         lazy.layout.decrease_nmaster(),
-        ),
-    Key([mod, "control"], "j",
-        lazy.layout.grow_down(),
-        lazy.layout.shrink(),
-        lazy.layout.increase_nmaster(),
         ),
     Key([mod, "control"], "Down",
         lazy.layout.grow_down(),
@@ -244,35 +223,66 @@ keys = [
     Key([mod, "shift"], "Right", lazy.layout.swap_right()),
 
     # TOGGLE FLOATING LAYOUT
-    Key([mod, "shift"], "space", lazy.window.toggle_floating()), ]
+    Key([mod, "mod1"], "space", lazy.window.toggle_floating()), ]
 
+# GROUPS
 groups = []
 
-# FOR QWERTY KEYBOARDS
-group_names = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "XF86Calculator", "XF86HomePage", "XF86AudioMute"]
+dict_groups = {
+    "1": {'label': '',
+          'matches': [Match(wm_class='Brave'), Match(wm_class='Brave-browser'), Match(wm_class='brave-browser')],
+          'layout': "侀 Tile"},
 
-group_labels = ["", "{}", "", "", "", "", "", "", "", "", "", "", ""]
+    "2": {'label': '{}', 'matches': [Match(wm_class='et'), Match(wm_class='Et')], 'layout': "侀 Tile"},
 
-group_layouts = ["侀 Tile", "侀 Tile", " Tree", " Tree", "侀 Tile", "侀 Tile", "侀 Tile", "侀 Tile",
-                 " Tree", " Tree", "monadwide", " Max", "侀 Tile"]
+    "3": {'label': '', 'matches': [Match(wm_class='jetbrains-pycharm')], 'layout': " Tree"},
 
-for i in range(len(group_names)):
-    groups.append(
-        Group(
-            name=group_names[i],
-            layout=group_layouts[i],
-            label=group_labels[i],
-        ))
+    "4": {'label': '',
+          'matches': [Match(wm_class='robo3t'), Match(wm_class='vstudio'), Match(wm_class='Valentina Studio')],
+          'layout': " Tree"},
+    "5": {'label': '', 'matches': [], 'layout': "侀 Tile"},
+
+    "6": {'label': '',
+          'matches': [Match(wm_class='Vlc'), Match(wm_class='vlc'),
+                      Match(wm_class='Mpv'), Match(wm_class='mpv'), Match(wm_class='zoom'), Match(wm_class='Zoom')],
+          'layout': "侀 Tile"},
+    "7": {'label': '', 'matches': [], 'layout': "侀 Tile"},
+
+    "8": {'label': '', 'matches': [], 'layout': "侀 Tile"},
+
+    "9": {'label': '',
+          'matches': [Match(wm_class='whatsapp-nativefier-d40211'), Match(wm_class='Discord'), Match(wm_class='Slack'),
+                      Match(wm_class='slack'), Match(wm_class='microsoft teams - preview'),
+                      Match(wm_class='Microsoft Teams - Preview')
+                      ],
+          'layout': " Tree"},
+    "0": {'label': '', 'matches': [], 'layout': " Tree"},
+
+    "XF86Calculator": {'label': '', 'matches': [], 'layout': "侀 Tile"},
+
+    "XF86HomePage": {'label': '',
+                     'matches': [Match(wm_class='org.remmina.Remmina'), Match(wm_class='VirtualBox Manager'),
+                                 Match(wm_class='VirtualBox Machine'), Match(wm_class='Vmplayer'),
+                                 Match(wm_class='virtualbox manager'), Match(wm_class='virtualbox machine'),
+                                 Match(wm_class='vmplayer')
+                                 ],
+                     'layout': " Max"},
+
+    "XF86AudioMute": {'label': '', 'matches': [], 'layout': "侀 Tile"},
+}
+
+for k, i in dict_groups.items():
+    if 'name' not in i.keys():
+        i['name'] = k
+    groups.append(Group(**i))
 
 for i in groups:
     keys.extend([
-
         # CHANGE WORKSPACES
         Key([mod], i.name, lazy.group[i.name].toscreen()),
         Key([mod, "mod1"], "Right", lazy.screen.next_group()),
         Key([mod, "mod1"], "Left", lazy.screen.prev_group()),
-        Key(["mod1"], "Tab", lazy.screen.toggle_group()),
-        Key(["mod1", "shift"], "Tab", lazy.screen.prev_group()),
+        Key([mod], "Tab", lazy.screen.toggle_group()),
 
         # MOVE WINDOW TO SELECTED WORKSPACE 1-10 AND STAY ON WORKSPACE
         # Key([mod, "shift"], i.name, lazy.window.togroup(i.name)),
@@ -291,6 +301,7 @@ layouts = [
     layout.TreeTab(name=" Tree"),
     #    layout.Slice(**layout_theme),
     layout.Max(margin=5, border_width=2, border_focus="#5e81ac", border_normal="#4c566a", name=" Max"),
+    # layout.VerticalTile(border_focus="#5e81ac", border_normal="#4c566a", name="VT"),
 ]
 
 
@@ -324,6 +335,19 @@ def init_widgets_defaults():
 widget_defaults = init_widgets_defaults()
 
 random_bar = lambda: "▁▂▃▄▅▆▇█"[randrange(0, 8)]
+
+
+def status_getter(p: int):
+    if p >= 90:
+        return ':'
+    elif p >= 70:
+        return ':'
+    elif p >= 40:
+        return ':'
+    elif p >= 20:
+        return ':'
+    else:
+        return ':'
 
 
 def init_widgets_list():
@@ -374,7 +398,18 @@ def init_widgets_list():
             foreground=colors[2],
             background=colors[1]
         ),
-        Radio(playlist={"BajoLaLupa": "http://198.15.107.53:8090/;"},
+        HeadsetBattery(font="MesloLGS NF",
+                       charging_charts=[':'],
+                       battery_level_format=lambda x: f':{x}%',
+                       # battery_level_format=status_getter,
+                       disconnected_chart=''),
+        Sep(
+            linewidth=1,
+            padding=10,
+            foreground=colors[2],
+            background=colors[1]
+        ),
+        Radio(playlist={"R Nacional": "http://198.15.107.53:8090/;"},
               playing_spinner=[random_bar() + random_bar() + random_bar() + random_bar() for e in range(10)],
               font="MesloLGS NF",
               mute_string="婢",
@@ -401,7 +436,7 @@ def init_widgets_list():
         Net(
             font="MesloLGS NF Blond",
             fontsize=12,
-            #interface=["enp24s0", "wlp26s0"],
+            # interface=["enp24s0", "wlp26s0"],
             foreground=colors[2],
             background=colors[1],
             padding=0,
@@ -503,6 +538,10 @@ def init_widgets_list():
             format="%Y-%m-%d %H:%M",
             mouse_callbacks={'Button1': lambda qtile: qtile.cmd_spawn("xfce4-terminal cal -3")}
         ),
+        # WidgetBox(widgets=[
+        #    TextBox(text="This widget is in the box"),
+        #    Memory()
+        # ],background=colors[1]),
         Sep(
             linewidth=1,
             padding=10,
@@ -555,17 +594,19 @@ def init_widgets_list_2():
             foreground=colors[2],
             background=colors[1]
         ),
-        WindowName(font="Noto Sans",
-                   fontsize=12,
-                   foreground=colors[5],
-                   background=colors[1],
-                   ),
+        # WindowName(font="Noto Sans",
+        #           fontsize=12,
+        #           foreground=colors[5],
+        #           background=colors[1],
+        #           ),
+        Spacer(opacity=0),
         Sep(
             linewidth=1,
             padding=10,
             foreground=colors[2],
             background=colors[1]
         ),
+        # TaskList(),
         Net(
             font="FontAwesome",
             fontsize=12,
@@ -595,12 +636,13 @@ def init_widgets_screen2():
 widgets_screen1 = init_widgets_screen1()
 widgets_screen2 = init_widgets_screen2()
 
+
 # , margin=[10, 10, 0, 10]
 
 
 def init_screens():
     return [Screen(top=bar.Bar(widgets=init_widgets_screen1(), size=26)),
-            Screen(top=bar.Bar(widgets=init_widgets_screen2(), size=36))]
+            Screen(top=bar.Bar(widgets=init_widgets_screen2(), size=36, opacity=1))]
 
 
 screens = init_screens()
@@ -618,19 +660,21 @@ mouse = [
 dgroups_key_binder = None
 dgroups_app_rules = []
 
-
 # ASSIGN APPLICATIONS TO A SPECIFIC GROUPNAME
+"""
 @hook.subscribe.client_new
 def assign_app_group(client):
     # Group_name:[apps names(WM_CLASS)] get apps_names with xprop on terminal
     d = {"1": ["Brave", "Brave-browser", "brave-browser"],
+        # "3": ["jetbrains-pycharm", "jetbrains-pycharm"],
          "4": ["robo3t", "vstudio", "Valentina Studio"],
          "6": ["Vlc", "vlc", "Mpv", "mpv"],
 
          "XF86HomePage": ["org.remmina.Remmina", "VirtualBox Manager", "VirtualBox Machine", "Vmplayer",
                           "virtualbox manager", "virtualbox machine", "vmplayer", ],
 
-         "9": ["whatsapp-nativefier-d40211", "whatsapp-nativefier-d40211", "Discord", "discord", "Slack", "slack"],
+         "9": ["whatsapp-nativefier-d40211", "whatsapp-nativefier-d40211", "Discord", "discord", "Slack", "slack",
+               "microsoft teams - preview", "Microsoft Teams - Preview"],
 
          "0": []
          }
@@ -640,8 +684,8 @@ def assign_app_group(client):
         if wm_class in list(d.values())[i]:
             group = list(d.keys())[i]
             client.togroup(group)
-            client.group.cmd_toscreen()
-
+            #client.group.cmd_toscreen()
+"""
 
 main = None
 
