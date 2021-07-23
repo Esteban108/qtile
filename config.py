@@ -24,7 +24,7 @@ from headset_battery import HeadsetBattery
 from radio import Radio
 from task_log import TaskLog
 
-# mod4 or mod = super key
+# mod4 or mod = super key1
 mod = "mod4"
 mod1 = "alt"
 mod2 = "control"
@@ -515,7 +515,7 @@ def init_widgets_list():
             background=colors[1],
             padding=0,
             fontsize=12,
-            format="{MemUsed}/{MemTotal}"
+            format="{MemUsed: .0f}/{MemTotal: .0f}"
         ),
         Sep(
             linewidth=1,
@@ -641,8 +641,8 @@ widgets_screen2 = init_widgets_screen2()
 
 
 def init_screens():
-    return [Screen(top=bar.Bar(widgets=init_widgets_screen1(), size=26)),
-            Screen(top=bar.Bar(widgets=init_widgets_screen2(), size=36, opacity=1))]
+    return [Screen(top=bar.Bar(widgets=init_widgets_screen2(), size=36, opacity=1)),
+            Screen(top=bar.Bar(widgets=init_widgets_screen1(), size=26))]
 
 
 screens = init_screens()
@@ -650,8 +650,8 @@ screens = init_screens()
 # MOUSE CONFIGURATION
 mouse = [
     Drag([mod], "Button1", lazy.window.set_position_floating(), start=lazy.window.get_position()),
-    Drag([mod], "Button3", lazy.window.set_size_floating(), start=lazy.window.get_size()),
-    Click([mod], "Button2", lazy.window.bring_to_front()),
+    Click([mod], "Button2", lazy.window.toggle_floating(), start=lazy.window.get_size()),
+    # Click([mod], "Button3", lazy.window.bring_to_front()),
     Click([mod], "Button8", lazy.prev_layout()),
     Click([mod], "Button9", lazy.next_layout())
 
