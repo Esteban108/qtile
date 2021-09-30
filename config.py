@@ -637,12 +637,10 @@ widgets_screen1 = init_widgets_screen1()
 widgets_screen2 = init_widgets_screen2()
 
 
-# , margin=[10, 10, 0, 10]
-
-
 def init_screens():
-    return [Screen(top=bar.Bar(widgets=init_widgets_screen2(), size=36, opacity=1)),
-            Screen(top=bar.Bar(widgets=init_widgets_screen1(), size=26))]
+    return [
+        Screen(top=bar.Bar(widgets=init_widgets_screen2(), size=26, opacity=0.8)),
+        Screen(top=bar.Bar(widgets=init_widgets_screen1(), size=26, opacity=0.8)), ]
 
 
 screens = init_screens()
@@ -659,33 +657,6 @@ mouse = [
 
 dgroups_key_binder = None
 dgroups_app_rules = []
-
-# ASSIGN APPLICATIONS TO A SPECIFIC GROUPNAME
-"""
-@hook.subscribe.client_new
-def assign_app_group(client):
-    # Group_name:[apps names(WM_CLASS)] get apps_names with xprop on terminal
-    d = {"1": ["Brave", "Brave-browser", "brave-browser"],
-        # "3": ["jetbrains-pycharm", "jetbrains-pycharm"],
-         "4": ["robo3t", "vstudio", "Valentina Studio"],
-         "6": ["Vlc", "vlc", "Mpv", "mpv"],
-
-         "XF86HomePage": ["org.remmina.Remmina", "VirtualBox Manager", "VirtualBox Machine", "Vmplayer",
-                          "virtualbox manager", "virtualbox machine", "vmplayer", ],
-
-         "9": ["whatsapp-nativefier-d40211", "whatsapp-nativefier-d40211", "Discord", "discord", "Slack", "slack",
-               "microsoft teams - preview", "Microsoft Teams - Preview"],
-
-         "0": []
-         }
-    wm_class = client.window.get_wm_class()[0]
-    #
-    for i in range(len(d)):
-        if wm_class in list(d.values())[i]:
-            group = list(d.keys())[i]
-            client.togroup(group)
-            #client.group.cmd_toscreen()
-"""
 
 main = None
 
@@ -715,31 +686,35 @@ follow_mouse_focus = True
 bring_front_click = False
 cursor_warp = False
 floating_layout = layout.Floating(float_rules=[
-    {'wmclass': 'confirm'},
-    {'wmclass': 'dialog'},
-    {'wmclass': 'download'},
-    {'wmclass': 'error'},
-    {'wmclass': 'file_progress'},
-    {'wmclass': 'notification'},
-    {'wmclass': 'splash'},
-    {'wmclass': 'toolbar'},
-    {'wmclass': 'confirmreset'},
-    {'wmclass': 'makebranch'},
-    {'wmclass': 'maketag'},
-    {'wmclass': 'Arandr'},
-    {'wmclass': 'feh'},
-    {'wmclass': 'Galculator'},
-    {'wmclass': 'Oblogout'},
-    ##{'wmclass': 'xfce4-terminal'},
-    {'wname': 'branchdialog'},
-    {'wname': 'Open File'},
-    {'wname': 'pinentry'},
-    {'wname': 'Picture in picture'},
-    {'wmclass': 'ssh-askpass'},
+    # Run the utility of `xprop` to see the wm class and name of an X client.
+    *layout.Floating.default_float_rules,
+    Match(wm_class='confirmreset'),  # gitk
+    Match(wm_class='makebranch'),  # gitk
+    Match(wm_class='maketag'),  # gitk
+    Match(wm_class='ssh-askpass'),  # ssh-askpass
+    Match(title='branchdialog'),  # gitk
+    Match(title='pinentry'),  # GPG key password entry
+    Match(wm_class='Arcolinux-welcome-app.py'),
+    Match(wm_class='Arcolinux-tweak-tool.py'),
+    Match(wm_class='Arcolinux-calamares-tool.py'),
+    Match(wm_class='confirm'),
+    Match(wm_class='dialog'),
+    Match(wm_class='download'),
+    Match(wm_class='error'),
+    Match(wm_class='file_progress'),
+    Match(wm_class='notification'),
+    Match(wm_class='splash'),
+    Match(wm_class='toolbar'),
+    Match(wm_class='Arandr'),
+    Match(wm_class='feh'),
+    Match(wm_class='Galculator'),
+    Match(wm_class='arcolinux-logout'),
+    # Match(wm_class='xfce4-terminal'),
+    Match(title='Picture in picture'),
 
 ], fullscreen_border_width=0, border_width=0)
 auto_fullscreen = True
 
-focus_on_window_activation = "focus"  # or smart focus
+focus_on_window_activation = "focus"  # or smart
 
 wmname = "LG3D"
